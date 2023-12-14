@@ -26,8 +26,32 @@ export default function App() {
     setIsPlaying(!isPlaying);
   };
 
+  const toggleFullScreen = () => {
+    const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
+
+    if (!isFullscreen) {
+      const elem = playerRef.current.wrapper;
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
+    }
+  };
+
+  const handleVideoClick = () => {
+    togglePlayPause();
+  };
+
   return (
-    <div className="video-container" onMouseEnter={() => setShowControls(true)} onMouseLeave={() => setShowControls(false)} >
+    <div className="video-container" onMouseEnter={() => setShowControls(true)} onMouseLeave={() => setShowControls(false)}>
+      <div onClick={handleVideoClick}>
       <ReactPlayer
         ref={playerRef}
         url={url}
@@ -39,36 +63,41 @@ export default function App() {
         onContextMenu={(e) => e.preventDefault()}
         width="100%"
         height="100%"
+        
       />
+      </div>
 
       {/* Custom controls */}
-      {showControls && <div className="custom-controls">
-
-        {/* play pause button */}
-        <div className="play-pause" onClick={togglePlayPause}>
-          {isPlaying ? (<i class="fa-solid fa-pause"></i>) : (<i class="fa-solid fa-play"></i>)}
-        </div>
-        
-        {/* progress bar */}
-        <div className="progress-bar-container">
-          <div className="progress-bar" style={{ width: `${played * 100}%` }} />
-        </div>
-
-        {/* quality menu */}
-        <div className="quality-menu">
-            <select
-              value={quality}
-              onChange={(e) => handleQualityChange(e.target.value)}
-            >
-              <option className="quality-options" value="2k">4k</option>
-              <option className="quality-options" value="1080">1080p</option>
-              <option className="quality-options" value="720">720p</option>
+      {showControls && (
+        <div className="custom-controls">
+          {/* play pause button */}
+          <div className="play-pause" onClick={togglePlayPause}>
+            {isPlaying ? <i className="fa-solid fa-pause"></i> : <i className="fa-solid fa-play"></i>}
+          </div>
+          {/* progress bar */}
+          <div className="progress-bar-container">
+            <div className="progress-bar" style={{ width: `${played * 100}%` }} />
+          </div>
+          {/* quality menu */}
+          <div className="quality-menu">
+            <select value={quality} onChange={(e) => handleQualityChange(e.target.value)}>
+              <option className="quality-options" value="2k">
+                4k
+              </option>
+              <option className="quality-options" value="1080">
+                1080p
+              </option>
+              <option className="quality-options" value="720">
+                720p
+              </option>
             </select>
+          </div>
+          {/* fullscreen button */}
+          <div className="fullscreen-button" onClick={toggleFullScreen}>
+            <i className="fa-solid fa-expand"></i>
+          </div>
         </div>
-
-
-      </div>
-      }
+      )}
     </div>
   );
 }

@@ -75,3 +75,13 @@
     }
   }
   
+  .fullscreen-button {
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  /* Use an appropriate icon for fullscreen, or replace with your own icon */
+  .fullscreen-button i {
+    font-size: 18px;
+  }
+  

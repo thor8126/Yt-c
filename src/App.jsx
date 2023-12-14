@@ -5,8 +5,8 @@ import "./App.css"; // Import your CSS file for styling
 
 export default function App() {
   const [song, setSong] = useState("song1");
-  const [url, setUrl] = useState(urls[song]["url_2k"]);
   const [quality, setQuality] = useState("url_720");
+  const [url, setUrl] = useState(urls[song][quality]);
   const [played, setPlayed] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const playerRef = useRef(null);
